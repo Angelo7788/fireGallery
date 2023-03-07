@@ -1,9 +1,10 @@
 import React from "react";
+import Title from "../components/Title";
 
 function App() {
   return (
     <div className="tc" >
-      <h1>Gallery App</h1>
+      <Title/>
       
     </div>
   );
