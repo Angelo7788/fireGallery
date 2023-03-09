@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import {storage} from '../firebase/config';
+import {storage, firestore} from '../firebase/config';
 import {ref, uploadBytesResumable, getDownloadURL} from '@firebase/storage';
+import {addDoc, collection} from '@firebase/firestore';
+import { async } from "@firebase/util";
 
 // custom hook useStorage to keep all the logic out the component
 
@@ -8,6 +10,17 @@ const useStorage = (file) => {
     const [progress, setProgress] = useState(0);
     const [error, setError] = useState(null);
     const [url, setUrl] = useState(null);
+
+    const addToFirestoreDB = async (downloadURL) => {
+        try {
+            const docRef = await addDoc(collection(firestore, 'imagesUrl'), {
+                url: downloadURL
+            });
+            console.log('Document ID:', docRef.id);
+        } catch {
+            console.log('error')
+        }
+    }
 
     useEffect(() => {
         // references
@@ -26,7 +39,6 @@ const useStorage = (file) => {
         uploadTask.on('state_changed',
         (snapshot)=> {
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
             setProgress(progress);
         },
         (error)=> {
@@ -34,8 +46,8 @@ const useStorage = (file) => {
         },
         ()=> {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            console.log('File available at', downloadURL);
             setUrl(downloadURL);
+            addToFirestoreDB(downloadURL);
             });
         });
 

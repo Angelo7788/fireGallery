@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useStorage from "../hooks/useStorage";
+import '../index.css';
+
 
 const ProgressBar = ({file, setFile}) => {
 
     const {progress, url} = useStorage(file);
-    console.log(url,progress);
+    
+    useEffect(()=> {
+        if (url) {
+            setFile(null)
+        }
+    }, [url, setFile]);
+
+    // if url ok means that the file is uploaded so we can set the file to null
+    // to remove the progress bar
 
     return (
-        <div className="ma2">
-            progress - {url}
-        </div>
+        <div 
+            className="progress-bar"
+            style={{width: progress + '%'}}
+        >progress{progress}</div>
     )
 }
 
