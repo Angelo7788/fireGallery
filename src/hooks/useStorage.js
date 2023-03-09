@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import {storage} from '../firebase/config';
+import {ref, uploadBytesResumable, getDownloadURL} from '@firebase/storage';
 
 // custom hook useStorage to keep all the logic out the component
 
@@ -10,23 +11,39 @@ const useStorage = (file) => {
 
     useEffect(() => {
         // references
-        const storageRef = storage.ref(file.name);
 
-        storageRef.put(file).on('state_changed', (snapshot) => {
-            let percentage = (snapshot.byteTransferred / snapshot.totalBytes) * 100;
-            setProgress(percentage);
-        }, (err) => {
-            setError(err);
-        }, async () => {
-            const url = await storageRef.getDownloadURL();
-            setUrl(url);
-        })
+        const storageref = ref(storage,`${file.name}` );
+        
+        // upload file
+
+        // upload direct to firebase storage
+        // uploadBytes(storageref, file).then((snapshot) => {
+        //     console.log('Uploaded');
+        // });
+
+        const uploadTask = uploadBytesResumable(storageref, file);
+
+        uploadTask.on('state_changed',
+        (snapshot)=> {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            setProgress(progress);
+        },
+        (error)=> {
+            setError(error);
+        },
+        ()=> {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log('File available at', downloadURL);
+            setUrl(downloadURL);
+            });
+        });
 
         // .on method listen the progress
 
     }, [file]);
 
-    return (progress, url, error)
+    return {progress, url, error}
 
 }
 
