@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import useFirestore from "../hooks/useFirestore";
 import useStorage from "../hooks/useStorage";
 import '../index.css';
 
@@ -6,6 +7,7 @@ import '../index.css';
 const ProgressBar = ({file, setFile}) => {
 
     const {progress, url} = useStorage(file);
+    const {imagesUrl} = useFirestore();
     
     useEffect(()=> {
         if (url) {
