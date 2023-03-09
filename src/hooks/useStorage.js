@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import {storage, firestore} from '../firebase/config';
 import {ref, uploadBytesResumable, getDownloadURL} from '@firebase/storage';
-import {addDoc, collection} from '@firebase/firestore';
+import {addDoc, collection, serverTimestamp} from '@firebase/firestore';
 import { async } from "@firebase/util";
 
 // custom hook useStorage to keep all the logic out the component
@@ -14,7 +14,8 @@ const useStorage = (file) => {
     const addToFirestoreDB = async (downloadURL) => {
         try {
             const docRef = await addDoc(collection(firestore, 'imagesUrl'), {
-                url: downloadURL
+                url: downloadURL ,
+                timestamp: serverTimestamp(),
             });
             console.log('Document ID:', docRef.id);
         } catch {
