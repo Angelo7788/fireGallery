@@ -1,5 +1,5 @@
 import React from "react";
-import ImageUrl from "../components/ImageUrl";
+import ImageView from "../components/ImageView";
 import Title from "../components/Title";
 import UploadForm from "../components/UploadForm";
 
@@ -8,7 +8,7 @@ function App() {
     <div className="tc" >
       <Title/>
       <UploadForm/>
-      <ImageUrl/>
+      <ImageView/>
       
     </div>
   );

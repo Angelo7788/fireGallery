@@ -1,27 +1,30 @@
 import { useState, useEffect } from "react";
 import {firestore} from '../firebase/config';
-import {collection, getDocs} from '@firebase/firestore';
-import { async } from "@firebase/util";
+import {collection, getDocs, query, orderBy} from '@firebase/firestore';
 
-const useFirestore = async () => {
+const useFirestore = (dbName) => {
 
-    let imagesUrl = [];
 
-    useEffect(async() => {
-      const querySnapshot = await getDocs(collection(firestore, "imagesUrl"));
+    const [docs, setDocs] = useState([]);
+
+
+    const getImeages = async (dbName) => {
+      let documents = [];
+      const q = query(collection(firestore, (dbName)), orderBy('timestamp','desc') );
+
+      const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
-      imagesUrl.push(doc.data());
-      console.log(imagesUrl);
+        documents.push({...doc.data(), id: doc.id});
+      });
+      setDocs(documents);
+    }
 
-    },[]);
-    })
+    useEffect(() => {
+      getImeages(dbName);
+    },[dbName])
 
-    
-      
 
-    return {imagesUrl}
+    return {docs}
 }
 
 export default useFirestore;

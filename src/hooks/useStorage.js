@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import {storage, firestore} from '../firebase/config';
 import {ref, uploadBytesResumable, getDownloadURL} from '@firebase/storage';
 import {addDoc, collection, serverTimestamp} from '@firebase/firestore';
-import { async } from "@firebase/util";
 
 // custom hook useStorage to keep all the logic out the component
 

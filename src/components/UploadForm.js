@@ -5,11 +5,13 @@ const UploadForm = () => {
 
     const [file, setFile] = useState(null);
     const [error, setError] = useState(null);
+    
 
     const changeHandler = (event) => { 
 
         // define the type of files that we want to allow
         const types = ['image/png', 'image/jpeg'];
+        
 
         let selected = event.target.files[0];
         // console.log(event.target.value);
