@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useStorage from "../hooks/useStorage";
-import './styles.css';
+import {motion} from 'framer-motion';
 
 
 const ProgressBar = ({file, setFile}) => {
@@ -17,10 +17,11 @@ const ProgressBar = ({file, setFile}) => {
     // to remove the progress bar
 
     return (
-        <div 
+        <motion.div 
             className="progress-bar"
-            style={{width: progress + '%'}}
-        >progress{progress}</div>
+            initial={{width: 0}}
+            animate={{width: progress + '%'}}
+        >{progress}</motion.div>
     )
 }
 

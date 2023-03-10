@@ -32,6 +32,7 @@ const UploadForm = () => {
         <form className="mb4">
             <label>
                 <input type='file' onChange={changeHandler} />
+                <spam>+</spam>
             </label>
             
             <div className="ma2" >
