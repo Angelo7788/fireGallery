@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import useFirestore from "../hooks/useFirestore";
 import {motion} from 'framer-motion';
 import {firestore} from '../firebase/config';
 import {collection, query, onSnapshot, orderBy} from '@firebase/firestore';
-
+import { CiTrash } from "react-icons/ci";
+import Button from '@mui/material/Button';
 
 const ImageView = ({setSelectedImg}) => {
 
@@ -28,6 +28,19 @@ const ImageView = ({setSelectedImg}) => {
     return (
         <div className="img-grid">
             { docs && docs.map((doc)=>(
+                <div>
+                    <Button 
+                        variant="outlined" 
+                        startIcon={<CiTrash />} 
+                        style={{marginBottom: 20}}
+                        onClick={() =>{
+                            alert('imageID:');
+                            console.log(doc.id)
+                        }
+                        }
+                         >
+                        Delete
+                    </Button>
                 <motion.div 
                     layout
                     whileHover={{ opacity: 1}}
@@ -41,6 +54,7 @@ const ImageView = ({setSelectedImg}) => {
                         transition={{ delay: 1}}
                     />
                 </motion.div>
+                </div>
             ))}
         </div>
     )

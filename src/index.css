@@ -80,3 +80,13 @@ label:hover{
     background: var(--primary);
     color: white;
 }
+
+.bin-icon {
+    font-size: large;
+    color: blue;
+    /* position: absolute;
+    margin-top: 10px;
+    z-index: 2; */
+    margin-bottom: 20px;
+
+}
