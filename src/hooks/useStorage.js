@@ -10,13 +10,14 @@ const useStorage = (file) => {
     const [error, setError] = useState(null);
     const [url, setUrl] = useState(null);
 
-    const addToFirestoreDB = async (downloadURL) => {
+    const addToFirestoreDB = async (downloadURL, fileName ) => {
         try {
             const docRef = await addDoc(collection(firestore, 'imagesUrl'), {
                 url: downloadURL ,
                 timestamp: serverTimestamp(),
+                fileName: fileName,
+                like: 0,
             });
-            // console.log('Document ID:', docRef.id);
         } catch {
             console.log('error')
         }
@@ -47,7 +48,7 @@ const useStorage = (file) => {
         ()=> {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setUrl(downloadURL);
-            addToFirestoreDB(downloadURL);
+            addToFirestoreDB(downloadURL, file.name);
             });
         });
 
