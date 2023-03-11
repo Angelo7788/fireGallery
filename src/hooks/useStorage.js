@@ -16,7 +16,7 @@ const useStorage = (file) => {
                 url: downloadURL ,
                 timestamp: serverTimestamp(),
             });
-            console.log('Document ID:', docRef.id);
+            // console.log('Document ID:', docRef.id);
         } catch {
             console.log('error')
         }

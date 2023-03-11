@@ -14,9 +14,7 @@ const UploadForm = () => {
         
 
         let selected = event.target.files[0];
-        // console.log(event.target.value);
-        console.log(selected);
-
+        
         // we want to save the selected file only if present
 
         if (selected && types.includes(selected.type) ) {
@@ -32,7 +30,7 @@ const UploadForm = () => {
         <form className="mb4">
             <label>
                 <input type='file' onChange={changeHandler} />
-                <spam>+</spam>
+                <span>+</span>
             </label>
             
             <div className="ma2" >

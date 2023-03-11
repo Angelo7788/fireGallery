@@ -4,28 +4,28 @@ import {collection, getDocs, query, orderBy} from '@firebase/firestore';
 
 const useFirestore = (dbName) => {
 
-  // realtime data to fix!!
 
     const [docs, setDocs] = useState([]);
 
 
     const getImeages = async (dbName) => {
       let documents = [];
+      
       const q = query(collection(firestore, (dbName)), orderBy('timestamp','desc') );
 
-      const querySnapshot = await getDocs(q);
+      const querySnapshot = await getDocs(q);  
       querySnapshot.forEach((doc) => {
         documents.push({...doc.data(), id: doc.id});
       });
       setDocs(documents);
     }
 
-    useEffect(() => {
+  useEffect(() => {
       getImeages(dbName);
-    },[dbName])
+  },[dbName])
 
+ return {docs}
 
-    return {docs}
 }
 
 export default useFirestore;

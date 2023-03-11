@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useFirestore from "../hooks/useFirestore";
 import {motion} from 'framer-motion';
+import {firestore} from '../firebase/config';
+import {collection, query, onSnapshot, orderBy} from '@firebase/firestore';
 
 
 const ImageView = ({setSelectedImg}) => {
 
-    const {docs} = useFirestore('imagesUrl');
-    console.log('image', docs);
+    // const {docs} = useFirestore('imagesUrl');
+    // useFirestore hook not working with realtime data
+
+    const [docs, setDocs] = useState([]);
+
+    useEffect(()=>{
+        const q = query(collection(firestore, 'imagesUrl'), orderBy('timestamp','desc') );
+        const unsubscribe = onSnapshot(q, (querySnapshot)=> {
+            let documents = [];
+            querySnapshot.forEach((doc) => {
+                documents.push({...doc.data(), id: doc.id});
+            });
+            setDocs(documents);
+        });
+
+    })
+   
 
     return (
         <div className="img-grid">
