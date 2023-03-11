@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {motion} from 'framer-motion';
-import {firestore, storage} from '../firebase/config';
-import {collection, query, onSnapshot, orderBy, doc, deleteDoc, updateDoc} from '@firebase/firestore';
-import {ref, deleteObject} from '@firebase/storage';
+import {firestore} from '../firebase/config';
+import {collection, query, onSnapshot, orderBy} from '@firebase/firestore';
 import { CiTrash } from "react-icons/ci";
 import { AiOutlineLike } from "react-icons/ai";
 import Button from '@mui/material/Button';
+import { updateLike, deleteImage } from "../firebase/manage";
 
 const ImageView = ({setSelectedImg}) => {
 
@@ -13,23 +13,6 @@ const ImageView = ({setSelectedImg}) => {
     // useFirestore hook not working with realtime data
 
     const [docs, setDocs] = useState([]);
-
-    const deleteImage = async (fileName, docId) => {
-        const imageRef = ref(storage, `${fileName}`);
-        deleteObject(imageRef).then(()=> {
-            console.log('image deleted')
-        }).catch((error)=> {
-            alert('error')
-        })
-        deleteDoc(doc(firestore, 'imagesUrl', `${docId}`));
-    }
-
-    const updateLike = (docId, prevLike) => {
-        const updateRef = doc(firestore, 'imagesUrl', `${docId}`);
-        updateDoc(updateRef,{
-            like: prevLike + 1,
-        })
-    }
 
     useEffect(()=>{
         const q = query(collection(firestore, 'imagesUrl'), orderBy('timestamp','desc') );
@@ -40,7 +23,6 @@ const ImageView = ({setSelectedImg}) => {
             });
             setDocs(documents);
         });
-
     })
    
 
